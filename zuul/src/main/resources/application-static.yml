@@ -1,0 +1,23 @@
+zuul:
+  routes:
+    echo:
+      path: /users-service/**
+      serviceId: users-service
+      stripPrefix: true
+
+hystrix:
+  command:
+    users-service:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 8000
+
+users-service:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    listOfServers: http://127.0.0.1:9090,
+    ConnectTimeout: 1000
+    ReadTimeout: 3000
+    MaxTotalHttpConnections: 500
+    MaxConnectionsPerHost: 100

@@ -1,0 +1,6 @@
+zuul:
+  routes:
+    users:
+      path: /users/**
+      url: http://127.0.0.1:9090/users
+#      url: http://127.0.0.1:8088/users-service/v2/users

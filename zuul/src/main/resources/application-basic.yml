@@ -1,0 +1,4 @@
+zuul:
+  ignored-services: '*'
+  routes:
+    users-service: /users-service/**
