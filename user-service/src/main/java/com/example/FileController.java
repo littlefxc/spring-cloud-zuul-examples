@@ -51,8 +51,8 @@ public class FileController {
      * @param response
      * @throws Exception
      */
-    @GetMapping("/{filename}")
-    public void download(@PathVariable String filename, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @GetMapping
+    public void download(@RequestParam String filename, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         try (InputStream inputStream = new FileInputStream(new File(folder, filename));
              OutputStream outputStream = response.getOutputStream()) {

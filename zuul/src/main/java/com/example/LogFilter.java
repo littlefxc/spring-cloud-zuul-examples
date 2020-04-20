@@ -59,7 +59,7 @@ public class LogFilter extends ZuulFilter {
         String header = request.getHeader("deviceId");
         log.info("请求头：deviceId:{}", header);
 
-        testErrorHandle();
+//        testErrorHandle();
 
         return null;
     }
