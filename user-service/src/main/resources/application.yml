@@ -1,14 +1,15 @@
 server:
-  port: ${SERVER_PORT:9090}
+  port: ${SERVER_PORT:9099}
 spring:
   application:
     name: ${APP_NAME:users-service}
   cloud:
     consul:
-      host: ${CONSUL_HOST:192.168.200.19}
+      enabled: false
+      host: ${CONSUL_HOST:192.168.213.22}
       discovery:
         health-check-critical-timeout: 10s
-        hostname:
+        hostname: ${spring.application.name}
   http:
     multipart:
       file-size-threshold: 10MB # 设置这个的目的是在文件上传的时候，会不断的将请求中的文件数据写入磁盘，如果不设置，所有的二进制数据就会存放在内存中，通过Zuul做请求转发的时候，相当于会把这个数据给复制两份到内存中，很容易撑爆系统内存，造成OOM。
