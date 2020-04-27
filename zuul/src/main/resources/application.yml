@@ -2,7 +2,7 @@ server:
   port: 8088
 spring:
   application:
-    name: zuulZ-example
+    name: zuul-example
   cloud:
     consul:
       host: 192.168.212.14
@@ -34,9 +34,14 @@ zuul:
     users-service:
       path: /myusers/**
       serviceId: users-service
-      sensitiveHeaders: Cookie,Set-Cookie            # 局部黑名单功能，声明的才是需要拦截的
+      sensitiveHeaders: Cookie,Set-Cookie,deviceId            # 局部黑名单功能，声明的才是需要拦截的
 
 # 禁用 Zuul 过滤器
-#zuul.LogFilter.pre.disable: true
+zuul.LogFilter.pre.disable: false
 
-
+management:
+  security:
+    enabled: false
+security:
+  basic:
+    enabled: false

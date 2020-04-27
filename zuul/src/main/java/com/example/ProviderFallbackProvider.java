@@ -1,9 +1,12 @@
 package com.example;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.netflix.hystrix.exception.HystrixTimeoutException;
 import com.netflix.zuul.context.RequestContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.zuul.filters.route.FallbackProvider;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,6 +26,12 @@ import java.io.InputStream;
 @Slf4j
 @Component
 public class ProviderFallbackProvider implements FallbackProvider {
+
+    private final ObjectMapper objectMapper;
+
+    public ProviderFallbackProvider(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     /**
      * 服务id，如果需要所有调用都支持回退，则return "*"或return null
@@ -83,7 +92,7 @@ public class ProviderFallbackProvider implements FallbackProvider {
         }
     }
 
-    private ClientHttpResponse response(final HttpStatus status) {
+    private ClientHttpResponse response(final HttpStatus status)  {
         return new ClientHttpResponse() {
             @Override
             public HttpStatus getStatusCode() throws IOException {
@@ -120,9 +129,9 @@ public class ProviderFallbackProvider implements FallbackProvider {
 
     private InputStream getFallbackBody() throws IOException {
         RequestContext context = RequestContext.getCurrentContext();
-        log.error("服务(serviceId:{}) 熔断", context.get("serviceId"));
+        log.error("服务(serviceId:{}),URL={} 不可用", context.get("serviceId"), context.getRequest().getRequestURL());
         String msg = context.get("serviceId") + "服务不可用";
-        String result = "{\"content\":" + msg + "}";
-        return IOUtils.toInputStream(result, "UTF-8");
+        String json = objectMapper.writeValueAsString(ResultBean.error(500, msg));
+        return IOUtils.toInputStream(json, "UTF-8");
     }
 }

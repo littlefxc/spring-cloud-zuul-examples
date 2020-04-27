@@ -1,16 +1,19 @@
 ### 用户服务
-GET localhost:9090/users/awifi
+GET 127.0.0.1:9099/users/awifi
 
 
 ### zuul-basic
-GET localhost:8088/users-service/users/awifi
+GET 127.0.0.1:8088/users-service/users/awifi
 deviceId: 123
+Authorization: 456
 
 ### zuul-path
-GET localhost:8088/users/awifi
+GET 127.0.0.1:8088/myusers/users/awifi
+deviceId: 123
+Authorization: 456
 
 ### zuul-serviceId
-GET localhost:8088/users-service/users/awifi
+GET 127.0.0.1:8088/users-service/users/awifi
 
 ###
 
